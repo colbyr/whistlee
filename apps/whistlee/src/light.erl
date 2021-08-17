@@ -14,9 +14,9 @@
   turn_on/1
 ]).
 
-init(LightId) ->
+init(State = #{id := LightId}) ->
   io:format("Conntecting to light #~p~n", [LightId]),
-  {ok, LightId}.
+  {ok, State}.
 
 
 code_change(_OldVsn, State, _Extra) ->
@@ -25,41 +25,41 @@ code_change(_OldVsn, State, _Extra) ->
   {ok, State}.
 
 
-handle_call({on}, _From, LightId) ->
+handle_call({on}, _From, State = #{id := LightId}) ->
   io:format("Turn ON light #~p~n", [LightId]),
   Resp = hue:light_on(LightId),
-  {reply, Resp, LightId};
+  {reply, Resp, State};
 
-handle_call({off}, _From, LightId) ->
+handle_call({off}, _From, State = #{id := LightId}) ->
   io:format("Turn OFF light #~p~n", [LightId]),
   Resp = hue:light_off(LightId),
-  {reply, Resp, LightId};
+  {reply, Resp, State};
 
-handle_call(terminate, _From, LightId) ->
+handle_call(terminate, _From, State = #{id := LightId}) ->
   io:format("Disconnecting from light #~p~n", [LightId]),
-  {stop, normal, ok, LightId}.
+  {stop, normal, ok, State}.
 
 
-handle_cast(Unexpected, LightId) ->
+handle_cast(Unexpected, State) ->
   io:format("unexpected message ~p~n", [Unexpected]),
-  {noreply, LightId}.
+  {noreply, State}.
 
 
-handle_info(Msg, LightId) ->
+handle_info(Msg, State) ->
   io:format("unexpected message ~p~n", [Msg]),
-  {noreply, LightId}.
+  {noreply, State}.
 
 
-terminate(normal, LightId) ->
+terminate(normal, #{id := LightId}) ->
   io:format("Light #~p was disconnected.~n",[LightId]),
   ok.
 
 
 % Methods
 
-start(LightId) -> gen_server:start(?MODULE, LightId).
+start(LightId) -> gen_server:start(?MODULE, #{id => LightId}).
 
-start_link(LightId) -> gen_server:start_link(?MODULE, LightId, []).
+start_link(LightId) -> gen_server:start_link(?MODULE, #{id => LightId}, []).
 
 turn_off(Pid) ->
   gen_server:call(Pid, {off}).
