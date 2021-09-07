@@ -60,7 +60,7 @@ start_link(Name, Type, Port) ->
 
 init({Name, Type, Port}) ->
   log("registering"),
-  DeviceId = "C3:5D:3A:AE:5E:FA",
+  DeviceId = "C3:5D:3A:AE:5E:FB",
   Txt = [
     % based on https://github.com/homebridge/HAP-NodeJS/blob/master/src/lib/Advertiser.ts#L147-L157
     {'c#', configuration_number()}, % current configuration number
