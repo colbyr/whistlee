@@ -1,0 +1,13 @@
+*.o
+*.so
+*.app
+*.dll
+*.exp
+*.lib
+*.obj
+*.beam
+*.bea#
+.DS_Store
+doc/
+deps/
+.eunit/
