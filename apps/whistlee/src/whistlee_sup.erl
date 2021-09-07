@@ -26,10 +26,17 @@ start_link() ->
 %%                  type => worker(),       % optional
 %%                  modules => modules()}   % optional
 init([]) ->
-    SupFlags = #{strategy => one_for_all,
+    SupFlags = #{strategy => one_for_one,
                  intensity => 0,
                  period => 1},
-    ChildSpecs = [],
+    ChildSpecs = [
+      {discovery_id,
+       {discovery, start_link, ["Colby's test Accessory", "_hap._tcp.", 9394]},
+       permanent,
+       5000,
+       worker,
+       [discovery]}
+    ],
     {ok, {SupFlags, ChildSpecs}}.
 
 %% internal functions
