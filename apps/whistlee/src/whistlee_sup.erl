@@ -12,6 +12,7 @@
 -export([init/1]).
 
 -define(SERVER, ?MODULE).
+-define(PORT, 9394).
 
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
@@ -31,11 +32,17 @@ init([]) ->
                  period => 1},
     ChildSpecs = [
       {discovery_id,
-       {discovery, start_link, ["Colby's test Accessory", "_hap._tcp.", 9394]},
+       {discovery, start_link, ["Colby's test Accessory", "_hap._tcp.", ?PORT]},
        permanent,
        5000,
        worker,
-       [discovery]}
+       [discovery]},
+      {pairing_id,
+       {pairing, start_link, [?PORT]},
+       permanent,
+       5000,
+       worker,
+       [pairing]}
     ],
     {ok, {SupFlags, ChildSpecs}}.
 
