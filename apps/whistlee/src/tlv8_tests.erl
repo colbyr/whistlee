@@ -90,10 +90,21 @@ decode_by_schema_test() ->
   ),
 
   ?assertMatch(
+    [#{ test := "so fancy" }],
+    tlv8:decode_by_schema(
+      ?SEPARATOR,
+      #{ 16#1f => {test, fun (_) -> "so fancy" end} },
+      <<16#1f, 16#03, 119, 111, 119>>
+    )
+  ),
+
+  ?assertMatch(
     [#{ one := 1, two := "two", three := <<3>> }],
     tlv8:decode_by_schema(
       ?SEPARATOR,
-      #{ 16#01 => {one, integer}, 16#02 => {two, utf8}, 16#03 => {three, bytes} },
+      #{ 16#01 => {one, integer},
+         16#02 => {two, utf8},
+         16#03 => {three, bytes} },
       <<
         16#01, 16#01, 16#01,
         16#02, 16#03, 116, 119, 111,
