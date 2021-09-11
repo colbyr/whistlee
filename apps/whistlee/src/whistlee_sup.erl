@@ -36,13 +36,13 @@ init([]) ->
        permanent,
        5000,
        worker,
-       [discovery]}
-      %, {pairing_id,
-      %  {pairing, start_link, [?PORT]},
-      %  permanent,
-      %  5000,
-      %  worker,
-      %  [pairing]}
+       [discovery]},
+      {pairing_id,
+       {pairing, start_link, [?PORT]},
+       permanent,
+       5000,
+       worker,
+       [pairing]}
     ],
     {ok, {SupFlags, ChildSpecs}}.
 

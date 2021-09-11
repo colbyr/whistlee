@@ -18,9 +18,8 @@ start_link(Port) ->
   gen_server:start_link(?MODULE, {Port}, []).
 
 init({Port}) ->
-  {ok, ListenSocket} = gen_tcp:listen(Port, [{active, true}]),
+  {ok, ListenSocket} = gen_tcp:listen(Port, [{active, true}, binary]),
   {ok, AcceptSocket} = gen_tcp:accept(ListenSocket),
-  inet:setopts(AcceptSocket, [{active, true}]),
   {ok, {AcceptSocket, ListenSocket}}.
 
 handle_call(_E, _From, State) ->
@@ -32,7 +31,10 @@ handle_cast(_Msg, State) ->
   {noreply, State}.
 
 handle_info({tcp, _Socket, Req}, State) ->
-  clog("got request~n~n~p", [Req]),
+  Lines = binary:split(Req, <<"\r\n">>, [global, trim_all]),
+  Content = tlv8:decode_pairing(lists:last(Lines)),
+  clog("got request~n~n~p~n", [Req]),
+  clog("decoded content:~n~p~n", [Content]),
   {noreply, State}.
 
 terminate(normal, {AcceptSocket, ListenSocket}) ->
