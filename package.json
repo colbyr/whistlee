@@ -10,6 +10,6 @@
     "lint-staged": "^11.1.2"
   },
   "lint-staged": {
-    "*.{erl,hrl,*.src,config}": "rebar3 fmt"
+    "*.{erl,hrl,*.src,config}": "rebar3 fmt --write"
   }
 }
