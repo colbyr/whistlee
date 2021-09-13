@@ -1,0 +1,15 @@
+{
+  "name": "whistlee",
+  "version": "0.0.1",
+  "repository": "git@github.com:colbyr/whistlee.git",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2"
+  },
+  "lint-staged": {
+    "*.{erl,hrl,*.src,config}": "rebar3 fmt"
+  }
+}
