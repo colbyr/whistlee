@@ -7,7 +7,8 @@
         kernel,
         stdlib,
         dnssd,
-        hackney
+        hackney,
+        ranch
     ]},
     {env, []},
     {modules, []},

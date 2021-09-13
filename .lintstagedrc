@@ -1,0 +1,3 @@
+{
+  "*.{erl,hrl,src,config}": "xargs rebar3 fmt"
+}

@@ -35,12 +35,11 @@ init([]) ->
     ChildSpecs = [
         {discovery_id,
             {discovery, start_link, [
-                "Colby's test Accessory", "_hap._tcp.", ?PORT
+                "Colby's test Accessory",
+                "_hap._tcp.",
+                ?PORT
             ]},
-            permanent, 5000, worker, [discovery]},
-        {pairing_id, {pairing, start_link, [?PORT]}, permanent, 5000, worker, [
-            pairing
-        ]}
+            permanent, 5000, worker, [discovery]}
     ],
     {ok, {SupFlags, ChildSpecs}}.
 
